@@ -30,8 +30,8 @@ public class Drivetrain extends SubsystemBase {
 
   private Translation2d m_FLPos;
   private Translation2d m_FRPos;
-  private Translation2d m_BLPos;
-  private Translation2d m_BRPos;
+  // private Translation2d m_BLPos;
+  // private Translation2d m_BRPos;
 
   private SwerveDriveKinematics m_kinematics;
 
@@ -43,11 +43,11 @@ public class Drivetrain extends SubsystemBase {
 
     this.m_FLPos = new Translation2d(0.346, 0.248);
     this.m_FRPos = new Translation2d(0.346, -0.248);
-    this.m_BLPos = new Translation2d(-0.346, 0.248);
-    this.m_BRPos = new Translation2d(-0.346, -0.248);
+    // this.m_BLPos = new Translation2d(-0.346, 0.248);
+    // this.m_BRPos = new Translation2d(-0.346, -0.248);
 
     this.m_kinematics = new SwerveDriveKinematics(
-      this.m_FLPos, this.m_FRPos, this.m_BLPos, this.m_BRPos);
+      this.m_FLPos, this.m_FRPos);
   }
 
   /**
@@ -72,6 +72,8 @@ public class Drivetrain extends SubsystemBase {
 
   /**
    * Uses basic module angle + speed driving scheme
+   * @param angle angle to set modules to
+   * @param power speed at which to drive the modules
    */
   public void drive(double angle, double power) {
     this.m_modFR.moveMod(angle, power);
@@ -80,6 +82,13 @@ public class Drivetrain extends SubsystemBase {
     // this.m_modBL.moveMod(angle, power);
   }
 
+  /**
+   * Translates {@code x} velocity, {@code y} velocity and {@code rad} rotational velocity (all measured from chassis)
+   * into individual module states and then applies those to each module.
+   * @param x desired x velocity
+   * @param y desired y velocity
+   * @param rad desired rotational velocity
+   */
   public void swerve(double x, double y, double rad) {
     ChassisSpeeds speeds = new ChassisSpeeds(x, y, rad);
     SwerveModuleState[] modStates = m_kinematics.toSwerveModuleStates(speeds);

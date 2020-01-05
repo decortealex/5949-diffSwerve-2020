@@ -18,7 +18,6 @@ public class SwerveControlCommand extends CommandBase {
    * Creates a new SwerveControlCommand.
    */
   public SwerveControlCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.m_dt);
   }
 
