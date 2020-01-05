@@ -9,7 +9,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.subsystems.DiffSwerveMod;
 import frc.subsystems.Drivetrain;
 import frc.commands.SwerveControlCommand;
 import frc.controllers.XOneController;

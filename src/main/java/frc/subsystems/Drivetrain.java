@@ -7,15 +7,12 @@
 
 package frc.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.commands.SwerveControlCommand;
 import frc.subsystems.DiffSwerveMod;
 import frc.subsystems.DiffSwerveMod.ModuleID;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**

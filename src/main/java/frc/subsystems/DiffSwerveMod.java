@@ -10,14 +10,8 @@ package frc.subsystems;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.mathutil.MathUtil;
-import frc.mathutil.Vector2d;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.CANEncoder;
-
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Differential Swerve Module Class used to control individual swerve modules.
