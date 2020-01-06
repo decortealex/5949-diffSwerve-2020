@@ -15,5 +15,8 @@ public class RobotConstants {
 
     public static final double coulsonRad = .0381;
 
+    public static final double SWERVE_RATIO = 60;
+    public static final double MAXRPM = 5700;
+
     
 }

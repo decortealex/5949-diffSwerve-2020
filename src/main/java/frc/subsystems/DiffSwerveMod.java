@@ -7,8 +7,8 @@
 
 package frc.subsystems;
 
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.mathutil.MathUtil;
 import frc.robot.RobotConstants;
 
@@ -22,50 +22,20 @@ public class DiffSwerveMod extends PIDSubsystem {
     FR, FL, BL, BR;
   }
 
-  /*
-  two motor rotation: 
-    kP = 0.0014;
-    kI = 0.0;
-    kD = .0021;
-    kF = .007;
-
-    
-  private static double kP = 0.00067;
-  private static double kI = 0.0;
-  private static double kD = 0.0015;
-  private static double kF = 0.007;
-
-  */
-
   private static double kP = 2.5;
   private static double kI = 5.8e-2;
   private static double kD = 8.8;
   private static double kF = 9e-3;
 
-  private static double period = .025;
-
-  private static double setpoint = 0;
-
-  private static final double SWERVE_RATIO = 60;
-  private static final double MAXRPM = 5700;
-
-  // private CANSparkMax motor0;
-  // private CANSparkMax motor1;
-
-  // private CANEncoder motor0Enc;
-  // private CANEncoder motor1Enc;
-
   private NEOMotor motor0;
   private NEOMotor motor1;
-
-  private ModuleID modID;
 
   private double output;
 
 
   public DiffSwerveMod(ModuleID id) {
-    super("Differential", kP, kI, kD, kF, period);
-
+    super(new PIDController(kP, kI, kD));
+    getController().setTolerance(1.5);
     switch(id) {
       case FL:
         motor0 = new NEOMotor(RobotConstants.FL_motor1, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -86,18 +56,6 @@ public class DiffSwerveMod extends PIDSubsystem {
       default:
         System.out.println("id is invalid");
     }
-
-    setOutputRange(-5700, 5700);
-    setAbsoluteTolerance(1.5);
-  }
-
-  /**
-   * Sets desired setpoint for PID controller to approach
-   * @param setpoint to approach
-   */
-  @Override
-  public void setSetpoint(double setpoint) {
-    super.setSetpoint(setpoint);
   }
 
   /**
@@ -121,9 +79,13 @@ public class DiffSwerveMod extends PIDSubsystem {
    * @return Module Angle by taking average of the two motors and multiplying by gear ratio
    */
   public double getModAngle() {
-    return Math.floor(this.getPosAvg() * SWERVE_RATIO);
+    return Math.floor(this.getPosAvg() * RobotConstants.SWERVE_RATIO);
   }
 
+  /**
+   * 
+   * @return Module Angle wrapped around
+   */
   public double getModPosWrap() {
     return MathUtil.boundHalfAngleRad((double)(this.getModAngle()));
   }
@@ -135,7 +97,7 @@ public class DiffSwerveMod extends PIDSubsystem {
    */
   public void moveMod(double angle, double power) {
     double target = MathUtil.boundHalfAngleDeg(angle);
-    this.setSetpoint(angle);
+    this.setSetpoint(target);
     // System.out.printf("%nPV: %4.2f%n", this.getModAngle());
     motor0.set(this.output + (MathUtil.msToRpm(power)));
     motor1.set(this.output - (MathUtil.msToRpm(power)));
@@ -155,23 +117,12 @@ public class DiffSwerveMod extends PIDSubsystem {
   }
 
   @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
-
-  @Override
-  protected double returnPIDInput() {
-    // Return your input value for the PID loop
-    // e.g. a sensor, like a potentiometer:
-    // yourPot.getAverageVoltage() / kYourMaxVoltage;
+  protected double getMeasurement() {
     return this.getModAngle();
   }
 
   @Override
-  protected void usePIDOutput(double output) {
-    // Use output to drive your system, like a motor
-    // e.g. yourMotor.set(output);
+  protected void useOutput(double output, double setpoint) {
     this.output = output;
   }
 }
