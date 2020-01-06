@@ -10,6 +10,7 @@ package frc.subsystems;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.mathutil.MathUtil;
+import frc.robot.RobotConstants;
 
 import com.revrobotics.CANSparkMaxLowLevel;
 
@@ -37,8 +38,8 @@ public class DiffSwerveMod extends PIDSubsystem {
   */
 
   private static double kP = 2.5;
-  private static double kI = 5.5e-2;
-  private static double kD = 8.5;
+  private static double kI = 5.8e-2;
+  private static double kD = 8.8;
   private static double kF = 9e-3;
 
   private static double period = .025;
@@ -66,21 +67,21 @@ public class DiffSwerveMod extends PIDSubsystem {
     super("Differential", kP, kI, kD, kF, period);
 
     switch(id) {
-      case FR:
-        motor0 = new NEOMotor(2, CANSparkMaxLowLevel.MotorType.kBrushless);
-        motor1 = new NEOMotor(4, CANSparkMaxLowLevel.MotorType.kBrushless);
-        break;
       case FL:
-        motor0 = new NEOMotor(1, CANSparkMaxLowLevel.MotorType.kBrushless);
-        motor1 = new NEOMotor(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor0 = new NEOMotor(RobotConstants.FL_motor1, CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor1 = new NEOMotor(RobotConstants.FL_motor2, CANSparkMaxLowLevel.MotorType.kBrushless);
         break;
-      case BR:
-        motor0 = new NEOMotor(5, CANSparkMaxLowLevel.MotorType.kBrushless);
-        motor1 = new NEOMotor(6, CANSparkMaxLowLevel.MotorType.kBrushless);
+      case FR:
+        motor0 = new NEOMotor(RobotConstants.FR_motor1, CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor1 = new NEOMotor(RobotConstants.FR_motor2, CANSparkMaxLowLevel.MotorType.kBrushless);
         break;
       case BL:
-        motor0 = new NEOMotor(7, CANSparkMaxLowLevel.MotorType.kBrushless);
-        motor1 = new NEOMotor(8, CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor0 = new NEOMotor(RobotConstants.BL_motor1, CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor1 = new NEOMotor(RobotConstants.BL_motor2, CANSparkMaxLowLevel.MotorType.kBrushless);
+        break;
+      case BR:
+        motor0 = new NEOMotor(RobotConstants.BR_motor1, CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor1 = new NEOMotor(RobotConstants.BR_motor2, CANSparkMaxLowLevel.MotorType.kBrushless);
         break;
       default:
         System.out.println("id is invalid");
@@ -91,8 +92,8 @@ public class DiffSwerveMod extends PIDSubsystem {
   }
 
   /**
-   * Sets desired setpoint for PID loop to approach
-   * @param double setpoint to approach
+   * Sets desired setpoint for PID controller to approach
+   * @param setpoint to approach
    */
   @Override
   public void setSetpoint(double setpoint) {
@@ -130,14 +131,14 @@ public class DiffSwerveMod extends PIDSubsystem {
   /**
    * Moves Swerve module to desired angle and runs at desired power in closed loop control
    * @param angle angle to hold the module at
-   * @param power speed to run the module at
+   * @param power speed to run the module at (in meters per second)
    */
   public void moveMod(double angle, double power) {
     double target = MathUtil.boundHalfAngleDeg(angle);
     this.setSetpoint(angle);
     // System.out.printf("%nPV: %4.2f%n", this.getModAngle());
-    motor0.set(this.output + (power * MAXRPM));
-    motor1.set(this.output - (power * MAXRPM));
+    motor0.set(this.output + (MathUtil.msToRpm(power)));
+    motor1.set(this.output - (MathUtil.msToRpm(power)));
   }
 
   public void moveModRad(double rad, double power) {

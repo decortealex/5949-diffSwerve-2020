@@ -7,6 +7,7 @@
 
 package frc.subsystems;
 
+import frc.robot.RobotConstants;
 import frc.subsystems.DiffSwerveMod;
 import frc.subsystems.DiffSwerveMod.ModuleID;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -38,10 +39,10 @@ public class Drivetrain extends SubsystemBase {
     // this.m_modBL = new DiffySwervePID(ModuleID.BL);
     // this.m_modBR = new DiffySwervePID(ModuleID.BR)
 
-    this.m_FLPos = new Translation2d(0.346, 0.248);
-    this.m_FRPos = new Translation2d(0.346, -0.248);
-    // this.m_BLPos = new Translation2d(-0.346, 0.248);
-    // this.m_BRPos = new Translation2d(-0.346, -0.248);
+    this.m_FLPos = new Translation2d(RobotConstants.y_dist, RobotConstants.x_dist);
+    this.m_FRPos = new Translation2d(RobotConstants.y_dist, -RobotConstants.x_dist);
+    // this.m_BLPos = new Translation2d(-RobotConstants.y_dist, RobotConstants.x_dist);
+    // this.m_BRPos = new Translation2d(-RobotConstants.y_dist, -RobotConstants.x_dist);
 
     this.m_kinematics = new SwerveDriveKinematics(
       this.m_FLPos, this.m_FRPos);

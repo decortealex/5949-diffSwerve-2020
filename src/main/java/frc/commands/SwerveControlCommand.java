@@ -8,6 +8,7 @@
 package frc.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.mathutil.MathUtil;
 import frc.robot.Robot;
 
 public class SwerveControlCommand extends CommandBase {
@@ -28,7 +29,11 @@ public class SwerveControlCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.m_dt.swerve(Robot.m_joystick.getLeftXAxis(), -Robot.m_joystick.getLeftYAxis(), Robot.m_joystick.getRightXAxis());
+    double xVel = MathUtil.map(Robot.m_joystick.getLeftYAxis(), -1, 1, -20, 20);
+    double yVel = MathUtil.map(-Robot.m_joystick.getLeftXAxis(), -1, 1, -20, 20);
+    double radVel = MathUtil.map(-Robot.m_joystick.getRightXAxis(), -1, 1, -Math.PI * 5, Math.PI * 5);
+
+    Robot.m_dt.swerve(xVel, yVel, radVel);
   }
 
   // Called once the command ends or is interrupted.

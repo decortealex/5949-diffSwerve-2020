@@ -1,6 +1,7 @@
 package frc.mathutil;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.RobotConstants;
 
 /**
  * Generic utility for math.
@@ -101,7 +102,7 @@ public class MathUtil {
         return sign * map(abs, min, 1, 0, 1);
     }
 
-    private static double map(double in, double lowIn, double highIn, double lowOut, double highOut) {
+    public static double map(double in, double lowIn, double highIn, double lowOut, double highOut) {
         double percentIn = (in - lowIn) / (highIn - lowIn);
         return percentIn * (highOut - lowOut) + lowOut;
     }
@@ -174,6 +175,14 @@ public class MathUtil {
             ticks += ticksPerRev;
         }
         return ticks;
+    }
+
+    public static double rpmToMs(double rpm) {
+        return ((2 * Math.PI * RobotConstants.coulsonRad) * rpm) / 60;
+    }
+
+    public static double msToRpm(double ms) {
+        return (60 * ms) / (2 * Math.PI * RobotConstants.coulsonRad);
     }
     
 
