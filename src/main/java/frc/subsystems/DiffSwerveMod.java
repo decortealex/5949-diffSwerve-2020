@@ -98,7 +98,6 @@ public class DiffSwerveMod extends PIDSubsystem {
   public void moveMod(double angle, double power) {
     double target = MathUtil.boundHalfAngleDeg(angle);
     this.setSetpoint(target);
-    // System.out.printf("%nPV: %4.2f%n", this.getModAngle());
     motor0.set(this.output + (MathUtil.msToRpm(power)));
     motor1.set(this.output - (MathUtil.msToRpm(power)));
   }
