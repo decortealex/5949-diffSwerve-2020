@@ -31,6 +31,8 @@ public class DiffSwerveMod extends PIDSubsystem {
   private NEOMotor motor0;
   private NEOMotor motor1;
 
+  private REVEncoder abs_encoder;
+
   private double output;
 
 
@@ -56,6 +58,8 @@ public class DiffSwerveMod extends PIDSubsystem {
       default:
         System.out.println("id is invalid");
     }
+
+    abs_encoder = new REVEncoder(RobotConstants.abs_encoder);
 
     setOutputRange(-5700, 5700);
     setAbsoluteTolerance(1.5);
@@ -125,13 +129,13 @@ public class DiffSwerveMod extends PIDSubsystem {
   }
 
   // @Override
-  // protected double getMeasurement() {
+  // protected double returnPIDInput() {
   //   return this.getModAngle();
   // }
 
   @Override
   protected double returnPIDInput() {
-    return this.getModAngle();
+    return abs_encoder.getAngleDeg();
   }
 
   @Override

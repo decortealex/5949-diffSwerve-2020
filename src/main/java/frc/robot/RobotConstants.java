@@ -10,13 +10,13 @@ public class RobotConstants {
     public static final int BR_motor1 = 7;
     public static final int BR_motor2 = 8;
 
+    public static final int abs_encoder = 0;
+
     public static final double y_dist = 0.368;
     public static final double x_dist = 0.292;
 
     public static final double coulsonRad = .0381;
 
     public static final double SWERVE_RATIO = 60;
-    public static final double MAXRPM = 5700;
-
-    
+    public static final double MAXRPM = 5700;    
 }
