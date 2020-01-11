@@ -7,9 +7,12 @@
 
 package frc.robot;
 
+// import com.analog.adis16448.frc.ADIS16448_IMU;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.subsystems.Drivetrain;
+import frc.subsystems.REVEncoder;
 import frc.commands.SwerveControlCommand;
 import frc.controllers.XOneController;
 
@@ -23,6 +26,8 @@ import frc.controllers.XOneController;
 public class Robot extends TimedRobot {  
   public static Drivetrain m_dt;
   public static XOneController m_joystick;
+  public static REVEncoder encoder;
+  // public static ADIS16448_IMU m_gyro;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -30,10 +35,13 @@ public class Robot extends TimedRobot {
   */
   @Override
   public void robotInit() {
-    m_dt = new Drivetrain();
+    // m_dt = new Drivetrain();
     m_joystick = new XOneController(0);
+    encoder = new REVEncoder(0);
+    // m_gyro = new ADIS16448_IMU();
 
-    CommandScheduler.getInstance().setDefaultCommand(m_dt, new SwerveControlCommand());    
+
+    // CommandScheduler.getInstance().setDefaultCommand(m_dt, new SwerveControlCommand());    
   }
 
   /**
@@ -65,7 +73,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    CommandScheduler.getInstance().run();
+    // CommandScheduler.getInstance().run();
+    // System.out.println(m_gyro.getAngle());
+    System.out.println(encoder.getAngle());
   }
 
   /**
@@ -73,7 +83,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    // System.out.print(m_swerveModule.getModAngle());
   }
 
 }

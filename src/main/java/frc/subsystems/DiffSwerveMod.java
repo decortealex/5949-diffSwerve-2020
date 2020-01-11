@@ -8,7 +8,7 @@
 package frc.subsystems;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.mathutil.MathUtil;
 import frc.robot.RobotConstants;
 
@@ -23,9 +23,10 @@ public class DiffSwerveMod extends PIDSubsystem {
   }
 
   private static double kP = 2.5;
-  private static double kI = 5.8e-2;
-  private static double kD = 8.8;
+  private static double kI = 5.5-2;
+  private static double kD = 8.5;
   private static double kF = 9e-3;
+  private static double period = .025;
 
   private NEOMotor motor0;
   private NEOMotor motor1;
@@ -34,8 +35,7 @@ public class DiffSwerveMod extends PIDSubsystem {
 
 
   public DiffSwerveMod(ModuleID id) {
-    super(new PIDController(kP, kI, kD));
-    getController().setTolerance(1.5);
+    super("DiffSwerve", kP, kI, kD, kF, period);
     switch(id) {
       case FL:
         motor0 = new NEOMotor(RobotConstants.FL_motor1, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -56,6 +56,9 @@ public class DiffSwerveMod extends PIDSubsystem {
       default:
         System.out.println("id is invalid");
     }
+
+    setOutputRange(-5700, 5700);
+    setAbsoluteTolerance(1.5);
   }
 
   /**
@@ -97,7 +100,13 @@ public class DiffSwerveMod extends PIDSubsystem {
    */
   public void moveMod(double angle, double power) {
     double target = MathUtil.boundHalfAngleDeg(angle);
-    this.setSetpoint(target);
+    boolean isReversed = MathUtil.isReversed(angle);
+    if(isReversed) {
+      setSetpoint(-target);
+    } else {
+      setSetpoint(target);
+    }
+    
     motor0.set(this.output + (MathUtil.msToRpm(power)));
     motor1.set(this.output - (MathUtil.msToRpm(power)));
   }
@@ -115,13 +124,23 @@ public class DiffSwerveMod extends PIDSubsystem {
     motor1.stop();
   }
 
+  // @Override
+  // protected double getMeasurement() {
+  //   return this.getModAngle();
+  // }
+
   @Override
-  protected double getMeasurement() {
+  protected double returnPIDInput() {
     return this.getModAngle();
   }
 
   @Override
-  protected void useOutput(double output, double setpoint) {
+  protected void usePIDOutput(double output) {
     this.output = output;
+  }
+
+  @Override
+  protected void initDefaultCommand() {
+
   }
 }

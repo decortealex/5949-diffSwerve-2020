@@ -10,6 +10,8 @@ package frc.subsystems;
 import frc.robot.RobotConstants;
 import frc.subsystems.DiffSwerveMod;
 import frc.subsystems.DiffSwerveMod.ModuleID;
+
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
@@ -89,6 +91,14 @@ public class Drivetrain extends SubsystemBase {
    */
   public void swerve(double x, double y, double rad) {
     ChassisSpeeds speeds = new ChassisSpeeds(x, y, rad);
+    SwerveModuleState[] modStates = m_kinematics.toSwerveModuleStates(speeds);
+
+    this.m_modFL.moveMod(modStates[0].angle.getDegrees(), modStates[0].speedMetersPerSecond);
+    this.m_modFR.moveMod(modStates[1].angle.getDegrees(), modStates[1].speedMetersPerSecond);
+  }
+
+  public void swerve(double x, double y, double rad, double robotRotation) {
+    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rad, Rotation2d.fromDegrees(robotRotation));
     SwerveModuleState[] modStates = m_kinematics.toSwerveModuleStates(speeds);
 
     this.m_modFL.moveMod(modStates[0].angle.getDegrees(), modStates[0].speedMetersPerSecond);

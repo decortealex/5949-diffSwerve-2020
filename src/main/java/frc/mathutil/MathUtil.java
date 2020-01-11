@@ -157,6 +157,14 @@ public class MathUtil {
         }
         return angle;
     }
+
+    public static boolean isReversed(double angle) {
+        boolean isReversed = false;
+        while (angle >= 180.0) {
+            isReversed = true;
+        }
+        return isReversed;
+    }
     
     /**
      * Adjusts {@code ticks} so that it is between {@code -ticksPerRev/2} and {@code ticksPerRev/2}.
@@ -184,6 +192,8 @@ public class MathUtil {
     public static double msToRpm(double ms) {
         return (60 * ms) / (2 * Math.PI * RobotConstants.coulsonRad);
     }
+
+
     
 
 }
