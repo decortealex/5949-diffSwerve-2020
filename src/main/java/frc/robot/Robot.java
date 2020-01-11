@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.SerialPort;
+
 // import com.analog.adis16448.frc.ADIS16448_IMU;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -15,6 +17,7 @@ import frc.subsystems.Drivetrain;
 import frc.subsystems.REVEncoder;
 import frc.commands.SwerveControlCommand;
 import frc.controllers.XOneController;
+import com.kauailabs.navx.frc.AHRS;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,7 +30,7 @@ public class Robot extends TimedRobot {
   public static Drivetrain m_dt;
   public static XOneController m_joystick;
   public static REVEncoder encoder;
-  // public static ADIS16448_IMU m_gyro;
+  public static AHRS m_gyro;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -37,6 +40,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_dt = new Drivetrain();
     m_joystick = new XOneController(0);
+    m_gyro = new AHRS(SerialPort.Port.kUSB);
 
     CommandScheduler.getInstance().setDefaultCommand(m_dt, new SwerveControlCommand());    
   }
