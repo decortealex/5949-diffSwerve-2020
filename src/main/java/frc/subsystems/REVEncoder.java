@@ -14,7 +14,7 @@ public class REVEncoder extends SubsystemBase {
   private DutyCycleEncoder encoder;
   private int channel;
   /**
-   * Creates a new REV Encoder port.
+   * Creates a new REV Encoder at the specified port.
    * @param port port that the encoder is attached to.
    */
   public REVEncoder(int port) {
@@ -22,6 +22,9 @@ public class REVEncoder extends SubsystemBase {
     this.channel = port;
   }
 
+  /**
+   * @return Current raw encoder value.
+   */
   public double getVal() {
     if(encoder.isConnected()) {
       return encoder.get();

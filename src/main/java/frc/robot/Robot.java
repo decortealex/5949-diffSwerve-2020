@@ -35,13 +35,10 @@ public class Robot extends TimedRobot {
   */
   @Override
   public void robotInit() {
-    // m_dt = new Drivetrain();
+    m_dt = new Drivetrain();
     m_joystick = new XOneController(0);
-    encoder = new REVEncoder(0);
-    // m_gyro = new ADIS16448_IMU();
 
-
-    // CommandScheduler.getInstance().setDefaultCommand(m_dt, new SwerveControlCommand());    
+    CommandScheduler.getInstance().setDefaultCommand(m_dt, new SwerveControlCommand());    
   }
 
   /**
@@ -73,9 +70,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // CommandScheduler.getInstance().run();
-    // System.out.println(m_gyro.getAngle());
-    System.out.println(encoder.getAngleDeg());
+    CommandScheduler.getInstance().run();
   }
 
   /**
