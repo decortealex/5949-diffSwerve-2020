@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Custom NEO motor class that wraps existing class and adds closed-loop velocity control using PID loops running
- * on Spark MAX motor controllers
+ * Custom NEO motor class that wraps existing class and adds closed-loop velocity control using PID control on the
+ * Spark MAX motor controller
 */
 public class NEOMotor extends Subsystem {
   private CANSparkMax m_motor;
@@ -31,11 +31,14 @@ public class NEOMotor extends Subsystem {
     m_pidControl = m_motor.getPIDController();
     m_encoder = m_motor.getEncoder();
 
+    // PID values for NEO motor. These were experimentally obtained, and may have to be modified for
+    // other configurations. MAKE SURE YOU KNOW WHAT YOU ARE DOING WHEN YOU MODIFY THESE! 
     kP = 4.5e-5;
     kI = 1.7e-6;
     kD = 1e-7;
     kIz = 0;
     kFF = 0;
+
     kMaxOutput = 1;
     kMinOutput = -1;
     maxRPM = 5700;
@@ -65,7 +68,7 @@ public class NEOMotor extends Subsystem {
   }
 
   /**
-   * sets NEO motor to 0, and PID setpoint to 0 (there is no method to 'disable' PID loop on Spark MAX)
+   * sets NEO motor to 0, and PID setpoint to 0 (there is no method to 'disable' PID controller on Spark MAX)
    */
   public void stop() {
     m_motor.set(0);
