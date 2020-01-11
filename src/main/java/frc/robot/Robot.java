@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // CommandScheduler.getInstance().run();
     // System.out.println(m_gyro.getAngle());
-    System.out.println(encoder.getAngle());
+    System.out.println(encoder.getAngleDeg());
   }
 
   /**

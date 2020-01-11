@@ -26,7 +26,7 @@ public class REVEncoder extends SubsystemBase {
     if(encoder.isConnected()) {
       return encoder.get();
     } else {
-      System.out.println("encoder " + this.channel + "not connected");
+      System.out.println("Encoder " + this.channel + "not connected");
       return 0.0;
     }
   }
@@ -38,7 +38,7 @@ public class REVEncoder extends SubsystemBase {
     if(encoder.isConnected()) {
       return (encoder.get() % 1) * (2 * Math.PI);
     } else {
-      System.out.println("encoder " + this.channel + "not connected");
+      System.out.println("Encoder " + this.channel + "not connected");
       return 0.0;
     }
   }
@@ -50,7 +50,7 @@ public class REVEncoder extends SubsystemBase {
     if(encoder.isConnected()) {
       return (encoder.get() % 1) * 360;
     } else {
-      System.out.println("encoder " + this.channel + "not connected");
+      System.out.println("Encoder " + this.channel + "not connected");
       return 0.0;
     }
   }
