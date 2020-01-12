@@ -38,8 +38,8 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
     this.m_modFL = new DiffSwerveMod(ModuleID.FL);
     this.m_modFR = new DiffSwerveMod(ModuleID.FR);
-    // this.m_modBL = new DiffySwervePID(ModuleID.BL);
-    // this.m_modBR = new DiffySwervePID(ModuleID.BR)
+    // this.m_modBL = new DiffSwerveMod(ModuleID.BL);
+    // this.m_modBR = new DiffSwerveMod(ModuleID.BR);
 
     this.m_FLPos = new Translation2d(RobotConstants.y_dist, RobotConstants.x_dist);
     this.m_FRPos = new Translation2d(RobotConstants.y_dist, -RobotConstants.x_dist);

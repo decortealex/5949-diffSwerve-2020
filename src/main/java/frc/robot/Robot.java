@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.subsystems.DiffSwerveMod;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.REVEncoder;
 import frc.commands.SwerveControlCommand;
@@ -31,6 +32,8 @@ public class Robot extends TimedRobot {
   public static XOneController m_joystick;
   public static REVEncoder encoder;
   public static AHRS m_gyro;
+  public static DiffSwerveMod mod;
+
 
   /**
    * This function is run when the robot is first started up and should be
@@ -40,8 +43,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_dt = new Drivetrain();
     m_joystick = new XOneController(0);
-    m_gyro = new AHRS(SerialPort.Port.kUSB);
-
+    // m_gyro = new AHRS(SerialPort.Port.kUSB);
+    mod = new DiffSwerveMod(DiffSwerveMod.ModuleID.FR);
     CommandScheduler.getInstance().setDefaultCommand(m_dt, new SwerveControlCommand());    
   }
 
@@ -69,12 +72,19 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
   }
 
+  @Override
+  public void disabledPeriodic() {
+    mod.print();
+
+  }
+
   /**
    * This function is called periodically during teleoperated mode.
    */
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
+    // System.out.println(m_gyro.getAngle());
   }
 
   /**

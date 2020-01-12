@@ -1,10 +1,10 @@
 package frc.robot;
 
 public class RobotConstants {
-    public static final int FL_motor1 = 3;
-    public static final int FL_motor2 = 5;
-    public static final int FR_motor1 = 1;
-    public static final int FR_motor2 = 6;
+    public static final int FL_motor1 = 6;
+    public static final int FL_motor2 = 1;
+    public static final int FR_motor1 = 5;
+    public static final int FR_motor2 = 3;
     public static final int BL_motor1 = 5;
     public static final int BL_motor2 = 6;
     public static final int BR_motor1 = 7;
