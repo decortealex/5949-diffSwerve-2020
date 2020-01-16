@@ -23,7 +23,7 @@ public class DiffSwerveMod extends PIDSubsystem {
   }
 
   private static double kP = 2.5;
-  private static double kI = 5.5-2;
+  private static double kI = 5.5e-2;
   private static double kD = 8.5;
   private static double kF = 9e-3;
   private static double period = .025;
@@ -170,5 +170,12 @@ public class DiffSwerveMod extends PIDSubsystem {
   public void periodic() {
     this.print();
 
+  }
+
+  public void test() {
+    motor0.set(200);
+    motor1.set(200);
+    // motor0.setRaw(0.1);
+    // motor1.setRaw(0.1);
   }
 }

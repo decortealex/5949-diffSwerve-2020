@@ -69,12 +69,14 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
   }
 
+
+
   public void disabledInit() {
   }
 
   @Override
   public void disabledPeriodic() {
-    mod.print();
+    // mod.print();
 
   }
 
@@ -85,6 +87,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
     // System.out.println(m_gyro.getAngle());
+    // mod.test();
   }
 
   /**

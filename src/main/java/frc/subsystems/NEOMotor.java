@@ -67,6 +67,10 @@ public class NEOMotor extends Subsystem {
     m_pidControl.setReference((rpm), ControlType.kVelocity);
   }
 
+  public void setRaw(double decimal) {
+    m_motor.set(decimal);
+  }
+
   /**
    * sets NEO motor to 0, and PID setpoint to 0 (there is no method to 'disable' PID controller on Spark MAX)
    */
