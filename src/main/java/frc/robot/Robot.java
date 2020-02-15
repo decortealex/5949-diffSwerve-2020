@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
   public static XOneController m_joystick;
   public static REVEncoder encoder;
   public static AHRS m_gyro;
-  public static DiffSwerveMod mod;
+  // public static DiffSwerveMod mod;
 
 
   /**
@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     m_dt = new Drivetrain();
     m_joystick = new XOneController(0);
     // m_gyro = new AHRS(SerialPort.Port.kUSB);
-    mod = new DiffSwerveMod(DiffSwerveMod.ModuleID.FR);
+    // mod = new DiffSwerveMod(DiffSwerveMod.ModuleID.FR);
     CommandScheduler.getInstance().setDefaultCommand(m_dt, new SwerveControlCommand());    
   }
 

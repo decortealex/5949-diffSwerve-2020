@@ -40,3 +40,14 @@ modAngle = avg(motor1Pos, motor2Pos)(1.786)
 XBOX One Controller:
 Left Joystick: translation
 Right Joystick: rotation
+
+Control Panel:
+    sequences: 
+        RGBY (cw)
+        RYBG (ccw)
+    distancePerSector: 1ft 1/2 in. max
+        probable: 1ft
+
+
+0.95492965855 rotations to complete one sector of the control panel
+

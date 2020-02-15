@@ -65,6 +65,21 @@ public class DiffSwerveMod extends PIDSubsystem {
     setAbsoluteTolerance(1.5);
   }
 
+  @Override
+  protected double returnPIDInput() {
+    return this.getModAngle();
+  }
+
+  @Override
+  protected void usePIDOutput(double output) {
+    this.output = output;
+  }
+
+  @Override
+  protected void initDefaultCommand() {
+
+  }
+
   /**
    * Enables internal PID Controller
    */
@@ -97,85 +112,39 @@ public class DiffSwerveMod extends PIDSubsystem {
     return MathUtil.boundHalfAngleRad((double)(this.getModAngle()));
   }
 
-  // /**
-  //  * Moves Swerve module to desired angle and runs at desired power in closed loop control
-  //  * @param angle angle to hold the module at
-  //  * @param power speed to run the module at (in meters per second)
-  //  */
-  // public void moveMod(double angle, double power) {
-  //   double target = MathUtil.boundHalfAngleDeg(angle);
-  //   boolean isReversed = MathUtil.isReversed(angle);
-  //   if(isReversed) {
-  //     setSetpoint(-target);
-  //   } else {
-  //     setSetpoint(target);
-  //   }
-    
-  //   motor0.set(this.output + (MathUtil.msToRpm(power)));
-  //   motor1.set(this.output - (MathUtil.msToRpm(power)));
-  // }
-  public void moveMod(double angle, double power) {
-    setSetpoint(angle);
+  public void moveModSmart(double angle, double power) {
+    double target = MathUtil.boundHalfAngleDeg(angle);
+    boolean isReversed = MathUtil.isReversed(angle);
 
-    // motor0.set(this.output + (MathUtil.msToRpm(power)));
-    // motor1.set(this.output - (MathUtil.msToRpm(power)));
-    motor0.set(this.output + power);
-    motor1.set(this.output - power);
-    System.out.println("PV: " + this.getModAngle());
-    System.out.println("SP: " + angle);
-    System.out.println("Output: " + this.output);
+    if(isReversed) {
+      setSetpoint(-target);
+    } else {
+      setSetpoint(target);
+    }
+
+    motor0.set(this.output + (MathUtil.msToRpm(power)));
+    motor1.set(this.output - (MathUtil.msToRpm(power)));
   }
 
-  public void print() {
-    System.out.println("PV: " + this.getModAngle());
-    // System.out.println("SP: " + angle);
-    System.out.println("Output: " + this.output);
+  public void moveModDumb(double angle, double power) {
+    setSetpoint(angle);
+
+    motor0.set(this.output + power);
+    motor1.set(this.output - power);
   }
 
   public void moveModRad(double rad, double power) {
     double target = (MathUtil.wrapAngleRad(rad)) * (180 / Math.PI);
-    this.moveMod(target, power);
+    this.moveModSmart(target, power);
   }
 
-  /**
-   * both motors stop and internal PID controllers are disabled
-   */
   public void stop() {
     motor0.stop();
     motor1.stop();
   }
 
-  @Override
-  protected double returnPIDInput() {
-    return this.getModAngle();
-  }
-
-  /*
-  @Override
-  protected double returnPIDInput() {
-    return abs_encoder.getAngleDeg();
-  } */
-
-  @Override
-  protected void usePIDOutput(double output) {
-    this.output = output;
-  }
-
-  @Override
-  protected void initDefaultCommand() {
-
-  }
-
-  @Override
-  public void periodic() {
-    this.print();
-
-  }
-
-  public void test() {
+  public void troubleshoot() {
     motor0.set(200);
     motor1.set(200);
-    // motor0.setRaw(0.1);
-    // motor1.setRaw(0.1);
   }
 }
