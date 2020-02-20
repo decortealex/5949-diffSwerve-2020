@@ -23,9 +23,9 @@ public class DiffSwerveMod extends PIDSubsystem {
   }
 
   private static double kP = 2.5;
-  private static double kI = 5.5e-2;
+  private static double kI = 0.055;
   private static double kD = 8.5;
-  private static double kF = 9e-3;
+  private static double kF = 0.009;
   private static double period = .025;
 
   private NEOMotor motor0;
@@ -61,7 +61,7 @@ public class DiffSwerveMod extends PIDSubsystem {
 
     // abs_encoder = new REVEncoder(RobotConstants.abs_encoder);
 
-    setOutputRange(-5700, 5700);
+    setOutputRange(-5300, 5300);
     setAbsoluteTolerance(1.5);
   }
 
@@ -73,6 +73,7 @@ public class DiffSwerveMod extends PIDSubsystem {
   @Override
   protected void usePIDOutput(double output) {
     this.output = output;
+    System.out.println("output: " + this.output);
   }
 
   @Override
@@ -114,16 +115,18 @@ public class DiffSwerveMod extends PIDSubsystem {
 
   public void moveModSmart(double angle, double power) {
     double target = MathUtil.boundHalfAngleDeg(angle);
+    // target = MathUtil.map(target, -360, 360, -180, 180);
     boolean isReversed = MathUtil.isReversed(angle);
 
     if(isReversed) {
       setSetpoint(-target);
+      System.out.println("Reversed Module");
     } else {
       setSetpoint(target);
     }
 
-    motor0.set(this.output + (MathUtil.msToRpm(power)));
-    motor1.set(this.output - (MathUtil.msToRpm(power)));
+    motor0.set(this.output + MathUtil.map(power, -1.0, 1.0, -5300, 5300));
+    motor1.set(this.output - MathUtil.map(power, -1.0, 1.0, -5300, 5300));
   }
 
   public void moveModDumb(double angle, double power) {
@@ -131,6 +134,7 @@ public class DiffSwerveMod extends PIDSubsystem {
 
     motor0.set(this.output + power);
     motor1.set(this.output - power);
+    System.out.println(this.output + power);
   }
 
   public void moveModRad(double rad, double power) {

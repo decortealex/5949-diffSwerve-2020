@@ -41,7 +41,7 @@ public class NEOMotor extends Subsystem {
 
     kMaxOutput = 1;
     kMinOutput = -1;
-    maxRPM = 5700;
+    maxRPM = 5300;
     setPoint = 0;
 
     m_pidControl.setP(kP);
@@ -89,30 +89,9 @@ public class NEOMotor extends Subsystem {
    * Tester method to tune PID values through SmartDashBoard
    * @param decimal speed to run NEO motor
    */
-  public void run(double decimal) {
-    double p = SmartDashboard.getNumber("P Gain", 0);
-    double i = SmartDashboard.getNumber("I Gain", 0);
-    double d = SmartDashboard.getNumber("D Gain", 0);
-    double iz = SmartDashboard.getNumber("I Zone", 0);
-    double ff = SmartDashboard.getNumber("Feed Forward", 0);
-    double max = SmartDashboard.getNumber("Max Output", 0);
-    double min = SmartDashboard.getNumber("Min Output", 0);
-
-    // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if((p != kP)) { m_pidControl.setP(p); kP = p; }
-    if((i != kI)) { m_pidControl.setI(i); kI = i; }
-    if((d != kD)) { m_pidControl.setD(d); kD = d; }
-    if((iz != kIz)) { m_pidControl.setIZone(iz); kIz = iz; }
-    if((ff != kFF)) { m_pidControl.setFF(ff); kFF = ff; }
-    if((max != kMaxOutput) || (min != kMinOutput)) { 
-      m_pidControl.setOutputRange(min, max); 
-      kMinOutput = min; kMaxOutput = max; 
-    }
+   public void run(double decimal) {
     
     setPoint = decimal * maxRPM;
     m_pidControl.setReference(setPoint, ControlType.kVelocity);
-
-    SmartDashboard.putNumber("SetPoint", setPoint);
-    SmartDashboard.putNumber("PV", m_encoder.getVelocity());
   }
 }

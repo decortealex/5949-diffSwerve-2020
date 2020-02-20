@@ -36,12 +36,13 @@ public class SwerveControlCommand extends CommandBase {
     }
     */
 
-    double xVel = MathUtil.map(Robot.m_joystick.getLeftYAxis(), -1, 1, -20, 20);
-    double yVel = MathUtil.map(-Robot.m_joystick.getLeftXAxis(), -1, 1, -20, 20);
+    double xVel = MathUtil.map(-Robot.m_joystick.getLeftYAxis(), -1, 1, -20, 20);
+    double yVel = MathUtil.map(Robot.m_joystick.getLeftXAxis(), -1, 1, -20, 20);
     double radVel = MathUtil.map(-Robot.m_joystick.getRightXAxis(), -1, 1, -Math.PI * 5, Math.PI * 5);
     // double robotAngle = Robot.m_gyro.getAngle();
 
     Robot.m_dt.swerve(xVel, yVel, radVel /*, robotAngle*/);
+    // Robot.m_dt.drive(Robot.m_joystick.getRightAxisAngle(), Robot.m_joystick.getLeftYAxis());
   }
 
   // Called once the command ends or is interrupted.

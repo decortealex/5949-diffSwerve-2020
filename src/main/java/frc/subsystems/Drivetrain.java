@@ -77,8 +77,8 @@ public class Drivetrain extends SubsystemBase {
   public void drive(double angle, double power) {
     this.m_modFL.moveModSmart(angle, power);
     this.m_modFR.moveModSmart(angle, power);
-    this.m_modBL.moveModSmart(angle, power);
-    this.m_modBR.moveModSmart(angle, power);
+    this.m_modBL.moveModSmart(angle, -power);
+    this.m_modBR.moveModSmart(angle, -power);
   }
 
   /**
@@ -96,6 +96,7 @@ public class Drivetrain extends SubsystemBase {
     this.m_modFR.moveModSmart(modStates[1].angle.getDegrees(), modStates[1].speedMetersPerSecond);
     this.m_modBL.moveModSmart(modStates[2].angle.getDegrees(), modStates[2].speedMetersPerSecond);
     this.m_modBR.moveModSmart(modStates[3].angle.getDegrees(), modStates[3].speedMetersPerSecond);
+    System.out.println(modStates[0].angle.getDegrees());
   }
 
   public void swerve(double x, double y, double rad, double robotRotation) {
