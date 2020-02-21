@@ -14,7 +14,6 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Custom NEO motor class that wraps existing class and adds closed-loop velocity control using PID control on the
@@ -56,7 +55,7 @@ public class NEOMotor extends Subsystem {
    * @return Current position of NEO built-in encoder
    */
   public double getPos() {
-    return m_encoder.getPosition();
+    return Math.floor(m_encoder.getPosition());
   }
 
   /**

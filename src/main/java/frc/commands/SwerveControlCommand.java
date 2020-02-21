@@ -7,6 +7,7 @@
 
 package frc.commands;
 
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.mathutil.MathUtil;
 import frc.robot.Robot;
@@ -23,6 +24,7 @@ public class SwerveControlCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    LiveWindow.disableAllTelemetry();
     Robot.m_dt.enable();
   }
 
@@ -41,8 +43,10 @@ public class SwerveControlCommand extends CommandBase {
     double radVel = MathUtil.map(-Robot.m_joystick.getRightXAxis(), -1, 1, -Math.PI * 5, Math.PI * 5);
     // double robotAngle = Robot.m_gyro.getAngle();
 
-    Robot.m_dt.swerve(xVel, yVel, radVel /*, robotAngle*/);
-    // Robot.m_dt.drive(Robot.m_joystick.getRightAxisAngle(), Robot.m_joystick.getLeftYAxis());
+    // Robot.m_dt.swerve(xVel, yVel, radVel /*, robotAngle*/);
+    Robot.m_dt.drive(Robot.m_joystick.getRightAxisAngle(), Robot.m_joystick.getLeftYAxis());
+
+    // Robot.m_dt.test();
   }
 
   // Called once the command ends or is interrupted.

@@ -73,7 +73,7 @@ public class DiffSwerveMod extends PIDSubsystem {
   @Override
   protected void usePIDOutput(double output) {
     this.output = output;
-    System.out.println("output: " + this.output);
+    // System.out.println("output: " + this.output);
   }
 
   @Override
@@ -102,7 +102,7 @@ public class DiffSwerveMod extends PIDSubsystem {
    * @return Module Angle by taking average of the two motors and multiplying by gear ratio
    */
   public double getModAngle() {
-    return Math.floor(this.getPosAvg() * RobotConstants.SWERVE_RATIO);
+    return (this.getPosAvg() * RobotConstants.SWERVE_RATIO);
   }
 
   /**
@@ -127,6 +127,8 @@ public class DiffSwerveMod extends PIDSubsystem {
 
     motor0.set(this.output + MathUtil.map(power, -1.0, 1.0, -5300, 5300));
     motor1.set(this.output - MathUtil.map(power, -1.0, 1.0, -5300, 5300));
+    // motor0.set(this.output + power);
+    // motor1.set(this.output - power);
   }
 
   public void moveModDumb(double angle, double power) {

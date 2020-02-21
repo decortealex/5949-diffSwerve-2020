@@ -27,46 +27,42 @@ public class Drivetrain extends SubsystemBase {
   private DiffSwerveMod m_modBL;
   private DiffSwerveMod m_modBR;
 
-  private Translation2d m_FLPos;
-  private Translation2d m_FRPos;
-  private Translation2d m_BLPos;
-  private Translation2d m_BRPos;
+  private Translation2d m_FLPos = new Translation2d(RobotConstants.x_dist_front, RobotConstants.y_dist);
+  private Translation2d m_FRPos = new Translation2d(RobotConstants.x_dist_front, -RobotConstants.y_dist);
+  private Translation2d m_BLPos = new Translation2d(-RobotConstants.x_dist_back, RobotConstants.y_dist);
+  private Translation2d m_BRPos = new Translation2d(-RobotConstants.x_dist_back, -RobotConstants.y_dist);
 
+  private final DiffSwerveMod[] swerveMods;
   private SwerveDriveKinematics m_kinematics;
 
   public Drivetrain() {
     this.m_modFL = new DiffSwerveMod(ModuleID.FL);
     this.m_modFR = new DiffSwerveMod(ModuleID.FR);
-    this.m_modBL = new DiffSwerveMod(ModuleID.BL);
-    this.m_modBR = new DiffSwerveMod(ModuleID.BR);
+    // this.m_modBL = new DiffSwerveMod(ModuleID.BL);
+    // this.m_modBR = new DiffSwerveMod(ModuleID.BR);
 
-    this.m_FLPos = new Translation2d(RobotConstants.x_dist_front, RobotConstants.y_dist);
-    this.m_FRPos = new Translation2d(RobotConstants.x_dist_front, -RobotConstants.y_dist);
-    this.m_BLPos = new Translation2d(-RobotConstants.x_dist_back, RobotConstants.y_dist);
-    this.m_BRPos = new Translation2d(-RobotConstants.x_dist_back, -RobotConstants.y_dist);
-
+    final DiffSwerveMod[] swervemods = {this.m_modFL, this.m_modFR};
+    this.swerveMods = swervemods;
     this.m_kinematics = new SwerveDriveKinematics(
-      this.m_FLPos, this.m_FRPos, this.m_BLPos, this.m_BRPos);
+      this.m_FLPos, this.m_FRPos);
   }
 
   /**
    * Enables internal PID controllers for each swerve module
    */
   public void enable() {
-    this.m_modFL.enable();
-    this.m_modFR.enable();
-    this.m_modBL.enable();
-    this.m_modBR.enable();
+    for(int i = 0; i < 2; i++) {
+      swerveMods[i].enable();
+    }
   }
 
   /**
    * Disables the internal PID controllers for each swerve module
    */
   public void disable() {
-    this.m_modFL.stop();
-    this.m_modFR.stop();
-    this.m_modBL.stop();
-    this.m_modBR.stop();
+    for(int i = 0; i < 2; i++) {
+      swerveMods[i].stop();
+    }
   }
 
   /**
@@ -75,10 +71,12 @@ public class Drivetrain extends SubsystemBase {
    * @param power speed at which to drive the modules
    */
   public void drive(double angle, double power) {
-    this.m_modFL.moveModSmart(angle, power);
-    this.m_modFR.moveModSmart(angle, power);
-    this.m_modBL.moveModSmart(angle, -power);
-    this.m_modBR.moveModSmart(angle, -power);
+    for(int i = 0; i < 2; i++) {
+      if(i < 2)
+        this.swerveMods[i].moveModSmart(angle, power);
+      else
+        this.swerveMods[i].moveModSmart(angle, -power);
+    }
   }
 
   /**
@@ -92,20 +90,23 @@ public class Drivetrain extends SubsystemBase {
     ChassisSpeeds speeds = new ChassisSpeeds(x, y, rad);
     SwerveModuleState[] modStates = m_kinematics.toSwerveModuleStates(speeds);
 
-    this.m_modFL.moveModSmart(modStates[0].angle.getDegrees(), modStates[0].speedMetersPerSecond);
-    this.m_modFR.moveModSmart(modStates[1].angle.getDegrees(), modStates[1].speedMetersPerSecond);
-    this.m_modBL.moveModSmart(modStates[2].angle.getDegrees(), modStates[2].speedMetersPerSecond);
-    this.m_modBR.moveModSmart(modStates[3].angle.getDegrees(), modStates[3].speedMetersPerSecond);
-    System.out.println(modStates[0].angle.getDegrees());
+    for(int i = 0; i < 2; i++) {
+      this.swerveMods[i].moveModSmart(modStates[i].angle.getDegrees(), modStates[i].speedMetersPerSecond);
+    }
   }
 
   public void swerve(double x, double y, double rad, double robotRotation) {
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rad, Rotation2d.fromDegrees(robotRotation));
     SwerveModuleState[] modStates = m_kinematics.toSwerveModuleStates(speeds);
 
-    this.m_modFL.moveModSmart(modStates[0].angle.getDegrees(), modStates[0].speedMetersPerSecond);
-    this.m_modFR.moveModSmart(modStates[1].angle.getDegrees(), modStates[1].speedMetersPerSecond);
-    this.m_modBL.moveModSmart(modStates[2].angle.getDegrees(), modStates[2].speedMetersPerSecond);
-    this.m_modBR.moveModSmart(modStates[3].angle.getDegrees(), modStates[3].speedMetersPerSecond);
+    for(int i = 0; i < 2; i++) {
+      this.swerveMods[i].moveModSmart(modStates[i].angle.getDegrees(), modStates[i].speedMetersPerSecond);
+    }
+  }
+
+  public void test() {
+    for(int i = 0; i < 2; i++) {
+      this.swerveMods[i].moveModSmart(90, 0.3);
+    }
   }
 }
