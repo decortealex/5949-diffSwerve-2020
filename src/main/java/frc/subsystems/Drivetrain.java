@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
    * Enables internal PID controllers for each swerve module
    */
   public void enable() {
-    for(int i = 0; i < 2; i++) {
+    for(int i = 0; i < this.swerveMods.length; i++) {
       swerveMods[i].enable();
     }
   }
@@ -60,7 +60,7 @@ public class Drivetrain extends SubsystemBase {
    * Disables the internal PID controllers for each swerve module
    */
   public void disable() {
-    for(int i = 0; i < 2; i++) {
+    for(int i = 0; i < this.swerveMods.length; i++) {
       swerveMods[i].stop();
     }
   }
@@ -71,7 +71,7 @@ public class Drivetrain extends SubsystemBase {
    * @param power speed at which to drive the modules
    */
   public void drive(double angle, double power) {
-    for(int i = 0; i < 2; i++) {
+    for(int i = 0; i < this.swerveMods.length; i++) {
       if(i < 2)
         this.swerveMods[i].moveModSmart(angle, power);
       else
@@ -90,7 +90,7 @@ public class Drivetrain extends SubsystemBase {
     ChassisSpeeds speeds = new ChassisSpeeds(x, y, rad);
     SwerveModuleState[] modStates = m_kinematics.toSwerveModuleStates(speeds);
 
-    for(int i = 0; i < 2; i++) {
+    for(int i = 0; i < this.swerveMods.length; i++) {
       this.swerveMods[i].moveModSmart(modStates[i].angle.getDegrees(), modStates[i].speedMetersPerSecond);
     }
   }
@@ -105,7 +105,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void test() {
-    for(int i = 0; i < 2; i++) {
+    for(int i = 0; i < this.swerveMods.length; i++) {
       this.swerveMods[i].moveModSmart(90, 0.3);
     }
   }
