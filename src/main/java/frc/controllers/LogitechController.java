@@ -14,6 +14,7 @@ public class LogitechController {
     
     private Joystick m_stick;
     private final static double DEADBAND = .08;
+    private final static double ANGLE_DEADBAND = .6;
 
     private double prevAngle;
 
@@ -65,7 +66,7 @@ public class LogitechController {
         double y = this.getLeftYAxis();
         double angleRad = Math.abs(Math.atan2(x, y));
         
-        if(Math.abs(x) < 0.6 && Math.abs(y) < 0.6) {
+        if(Math.abs(x) < ANGLE_DEADBAND && Math.abs(y) < ANGLE_DEADBAND) {
             return prevAngle;
         } else {
             prevAngle = angleRad;
@@ -93,7 +94,7 @@ public class LogitechController {
         double y = this.getRightYAxis();
         double angleRad = Math.abs(Math.atan2(x, y));
         
-        if(Math.abs(x) < 0.6 && Math.abs(y) < 0.6) {
+        if(Math.abs(x) < ANGLE_DEADBAND && Math.abs(y) < ANGLE_DEADBAND) {
             return prevAngle;
         } else {
             prevAngle = angleRad;

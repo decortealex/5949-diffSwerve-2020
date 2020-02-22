@@ -23,7 +23,7 @@ public class NEOMotor extends Subsystem {
   private CANSparkMax m_motor;
   private CANPIDController m_pidControl;
   private CANEncoder m_encoder;
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, setPoint;
+  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, setPoint;
 
   public NEOMotor(int deviceID, CANSparkMaxLowLevel.MotorType type) {
     m_motor = new CANSparkMax(deviceID, type);
@@ -55,6 +55,7 @@ public class NEOMotor extends Subsystem {
    * @return Current position of NEO built-in encoder
    */
   public double getPos() {
+
     return Math.floor(m_encoder.getPosition());
   }
 

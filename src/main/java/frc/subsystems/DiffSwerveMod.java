@@ -7,7 +7,6 @@
 
 package frc.subsystems;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.mathutil.MathUtil;
 import frc.robot.RobotConstants;
@@ -118,12 +117,21 @@ public class DiffSwerveMod extends PIDSubsystem {
    * @param power Speed to run module at
    */
   public void moveModSmart(double angle, double power) {
-    double modAngle = (Math.PI / 4) * (Math.cos(2 * (angle - (Math.PI / 2))) + 1);
-    setSetpoint(Math.toDegrees(modAngle));
+    System.out.println(angle);
+    setSetpoint(angle);
 
     motor0.set(this.output + MathUtil.msToRpm(power));
     motor1.set(this.output - MathUtil.msToRpm(power));
   }
+  /*
+   public void moveModSmart(double angle, double power) {
+    double modAngle = (Math.PI / 4) * (Math.cos(2 * (angle - (Math.PI / 2))) + 1);
+    System.out.println(Math.toDegrees(modAngle));
+    setSetpoint(Math.toDegrees(modAngle));
+
+    motor0.set(this.output + MathUtil.msToRpm(power));
+    motor1.set(this.output - MathUtil.msToRpm(power));
+  }*/
 
   /**
    * Moves module without any adjustments to speed

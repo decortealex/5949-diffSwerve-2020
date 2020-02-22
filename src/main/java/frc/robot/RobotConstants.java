@@ -11,8 +11,8 @@ public class RobotConstants {
     public static final int FR_motor2 = 3;
     public static final int BL_motor1 = 7;
     public static final int BL_motor2 = 8;
-    public static final int BR_motor1 = 5;
-    public static final int BR_motor2 = 6;
+    public static final int BR_motor1 = 6;
+    public static final int BR_motor2 = 5;
 
     // Swerve module absolute encoders
     public static final int FL_enc = 0;

@@ -22,7 +22,7 @@ public class DiffSwerveModule extends PIDSubsystem {
   private static double kP = 2.5;
   private static double kI = 5.5e-2;
   private static double kD = 8.5;
-  private static double kF = 9e-3;
+  // private static double kF = 9e-3;
   private static double period = .025;
 
   private NEOMotor motor0;

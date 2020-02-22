@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
@@ -22,8 +21,6 @@ public class PanelController extends PIDSubsystem {
   
   private final ColorSensorV3 m_sensor;
   private final ArrayList<Color> sequence;
-
-  private Talon motor;
 
   /**
    * Creates a new PanelController.
@@ -46,9 +43,6 @@ public class PanelController extends PIDSubsystem {
     }
 
     m_sensor = new ColorSensorV3(RobotConstants.i2cPort);
-
-    motor = new Talon(RobotConstants.CP_Motor);
-    
   }
 
   @Override

@@ -7,18 +7,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.SerialPort;
-
-// import com.analog.adis16448.frc.ADIS16448_IMU;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.subsystems.DiffSwerveMod;
 import frc.subsystems.Drivetrain;
 import frc.subsystems.REVEncoder;
 import frc.commands.SwerveControlCommand;
-import frc.controllers.XOneController;
-import com.kauailabs.navx.frc.AHRS;
+import frc.controllers.LogitechController;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,10 +23,8 @@ import com.kauailabs.navx.frc.AHRS;
  */
 public class Robot extends TimedRobot {  
   public static Drivetrain m_dt;
-  public static XOneController m_joystick;
+  public static LogitechController m_joystick;
   public static REVEncoder encoder;
-  public static AHRS m_gyro;
-  public static DiffSwerveMod mod;
 
 
   /**
@@ -42,7 +34,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_dt = new Drivetrain();
-    m_joystick = new XOneController(0);
+    m_joystick = new LogitechController(0);
     // m_gyro = new AHRS(SerialPort.Port.kUSB);
     // mod = new DiffSwerveMod(DiffSwerveMod.ModuleID.BR);
     CommandScheduler.getInstance().setDefaultCommand(m_dt, new SwerveControlCommand());    
@@ -67,6 +59,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+    // m_dt.resetEncs();
     // mod.enable();
   }
 
