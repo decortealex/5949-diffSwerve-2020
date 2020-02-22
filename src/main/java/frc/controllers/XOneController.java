@@ -13,6 +13,8 @@ public class XOneController {
     private Joystick m_stick;
     private final static double DEADBAND = .1;
 
+    private double prevAngle;
+
     public JoystickButton aButton;
     public JoystickButton bButton;
     public JoystickButton xButton;
@@ -24,7 +26,6 @@ public class XOneController {
     public JoystickButton leftJoystickButton;
     public JoystickButton rightJoystickButton;
 
-    public static double prevAngle;
 
     public XOneController(int port) {
         m_stick = new Joystick(port);
@@ -60,10 +61,19 @@ public class XOneController {
 
     public double getLeftAxisAngle() {
         double x = this.getLeftXAxis();
-        double y = -this.getLeftYAxis();
-        double angleRad = Math.atan(y / x);
-        double quadrant = this.getQuadrant(false);
-        return Math.toDegrees(Math.abs(angleRad) + Math.PI * (quadrant - 1)) + 180;
+        double y = this.getLeftYAxis();
+        double angleRad = Math.atan2(x, y);
+        
+        if(Math.abs(x) < 0.6 && Math.abs(y) < 0.6) {
+            return -(prevAngle);
+        } else {
+            prevAngle = (Math.toDegrees(angleRad) + 180);
+            if(prevAngle > 180) {
+                return -(prevAngle - 180);
+            } else {
+                return -(prevAngle);
+            }
+        }
     }
 
     public double getRightXAxis() {
@@ -108,32 +118,6 @@ public class XOneController {
     public double getLeftTrigger() {
         double val = m_stick.getRawAxis(2);
         return handleDeadband(val);
-    }
-
-    public double getQuadrant(boolean isRight) {
-        double x, y, quadrant = 0;
-        if(isRight) {
-            x = this.getRightXAxis();
-            y = this.getRightYAxis();
-        } else {
-            x = this.getLeftXAxis();
-            y = this.getLeftYAxis();
-        }
-
-        double sin = Math.asin(x / Math.hypot(x, y));
-        double cos = Math.acos(y / Math.hypot(x, y));
-
-        if(cos > 0 && sin > 0) {
-            quadrant = 1;
-        } else if(cos < 0 && sin > 0) {
-            quadrant = 2;
-        } else if(cos < 0 && sin < 0) {
-            quadrant = 3;
-        } else if(cos > 0 && sin < 0) {
-            quadrant = 4;
-        }
-
-        return quadrant;
     }
 
     private double handleDeadband(double num) {

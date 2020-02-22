@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class LogitechController {
     
     private Joystick m_stick;
-    private final static double deadband = .08;
+    private final static double DEADBAND = .08;
+
+    private double prevAngle;
 
     public JoystickButton aButton;
     public JoystickButton bButton;
@@ -39,6 +41,8 @@ public class LogitechController {
         startButton = new JoystickButton(m_stick, 8);
         leftJoystickButton = new JoystickButton(m_stick, 9);
         rightJoystickButton = new JoystickButton(m_stick, 10);
+
+        prevAngle = 0;
     }
 
     public double getLeftXAxis() {
@@ -48,7 +52,29 @@ public class LogitechController {
 
     public double getLeftYAxis() {
         double val = m_stick.getRawAxis(1);
+        return handleDeadband(-val);
+    }
+
+    public double getLeftAxisHypot() {
+        double val = Math.hypot(this.getLeftXAxis(), this.getLeftYAxis());
         return handleDeadband(val);
+    }
+
+    public double getLeftAxisAngle() {
+        double x = this.getLeftXAxis();
+        double y = this.getLeftYAxis();
+        double angleRad = Math.atan2(x, y);
+        
+        if(Math.abs(x) < 0.6 && Math.abs(y) < 0.6) {
+            return -(prevAngle);
+        } else {
+            prevAngle = (Math.toDegrees(angleRad) + 180);
+            if(prevAngle > 180) {
+                return -(prevAngle - 180);
+            } else {
+                return -(prevAngle);
+            }
+        }
     }
 
     public double getRightXAxis() {
@@ -61,18 +87,42 @@ public class LogitechController {
         return handleDeadband(val);
     }
 
-    public double getRightTrigger() {
-        double val = m_stick.getRawAxis(2);
+    public double getRightAxisHypot() {
+        double val = Math.hypot(this.getRightXAxis(), this.getRightYAxis());
         return handleDeadband(val);
     }
 
-    public double getLeftTrigger() {
+    public double getRightAxisAngle() {
+        double x = this.getRightXAxis();
+        double y = this.getRightYAxis();
+        double angleRad = Math.atan2(x, y);
+        
+        if(Math.abs(x) < 0.6 && Math.abs(y) < 0.6) {
+            // System.out.print("Joystick Angle: " + -prevAngle);
+            return -(prevAngle);
+        } else {
+            // System.out.print("Joystick Angle: " + -prevAngle);
+            prevAngle = (Math.toDegrees(angleRad) + 180);
+            if(prevAngle > 180) {
+                return -(prevAngle - 180);
+            } else {
+                return -(prevAngle);
+            }
+        }
+    }
+
+    public double getRightTrigger() {
         double val = m_stick.getRawAxis(3);
         return handleDeadband(val);
     }
 
+    public double getLeftTrigger() {
+        double val = m_stick.getRawAxis(2);
+        return handleDeadband(val);
+    }
+
     private double handleDeadband(double num) {
-        if(Math.abs(num) < deadband) {
+        if(Math.abs(num) < DEADBAND) {
             return 0;
         }
 
