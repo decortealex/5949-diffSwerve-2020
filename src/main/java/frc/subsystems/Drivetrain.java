@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
 /**
  * Combines Swerve modules into single drivetrain
  */
@@ -38,13 +39,13 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
     this.m_modFL = new DiffSwerveMod(ModuleID.FL);
     this.m_modFR = new DiffSwerveMod(ModuleID.FR);
-    // this.m_modBL = new DiffSwerveMod(ModuleID.BL);
-    // this.m_modBR = new DiffSwerveMod(ModuleID.BR);
+    this.m_modBL = new DiffSwerveMod(ModuleID.BL);
+    this.m_modBR = new DiffSwerveMod(ModuleID.BR);
 
-    final DiffSwerveMod[] swervemods = {this.m_modFL, this.m_modFR};
+    final DiffSwerveMod[] swervemods = {this.m_modFL, this.m_modFR, this.m_modBL, this.m_modBR};
     this.swerveMods = swervemods;
     this.m_kinematics = new SwerveDriveKinematics(
-      this.m_FLPos, this.m_FRPos);
+      this.m_FLPos, this.m_FRPos, this.m_BLPos, this.m_BRPos);
   }
 
   /**
@@ -95,15 +96,26 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  /**
+   * Translates chassis velocities into individual module states and then applies those to each module.
+   * Takes into account gyro for field-oriented drive.
+   * @param x desired x velocity
+   * @param y desired y velocity
+   * @param rad desired rotational velocity
+   * @param robotRotation current gyro angle
+   */
   public void swerve(double x, double y, double rad, double robotRotation) {
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rad, Rotation2d.fromDegrees(robotRotation));
     SwerveModuleState[] modStates = m_kinematics.toSwerveModuleStates(speeds);
 
-    for(int i = 0; i < 2; i++) {
+    for(int i = 0; i < this.swerveMods.length; i++) {
       this.swerveMods[i].moveModSmart(modStates[i].angle.getDegrees(), modStates[i].speedMetersPerSecond);
     }
   }
 
+  /**
+   * tester method for each motor
+   */
   public void test() {
     for(int i = 0; i < this.swerveMods.length; i++) {
       this.swerveMods[i].moveModSmart(90, 0.3);

@@ -115,7 +115,6 @@ public class DiffSwerveMod extends PIDSubsystem {
 
   public void moveModSmart(double angle, double power) {
     double target = MathUtil.boundHalfAngleDeg(angle);
-    // target = MathUtil.map(target, -360, 360, -180, 180);
     boolean isReversed = MathUtil.isReversed(angle);
 
     if(isReversed) {
@@ -125,10 +124,9 @@ public class DiffSwerveMod extends PIDSubsystem {
       setSetpoint(target);
     }
 
-    motor0.set(this.output + MathUtil.map(power, -1.0, 1.0, -5300, 5300));
-    motor1.set(this.output - MathUtil.map(power, -1.0, 1.0, -5300, 5300));
-    // motor0.set(this.output + power);
-    // motor1.set(this.output - power);
+    motor0.set(this.output + MathUtil.msToRpm(power));
+    motor1.set(this.output - MathUtil.msToRpm(power));
+    System.out.println("motor power set");
   }
 
   public void moveModDumb(double angle, double power) {
