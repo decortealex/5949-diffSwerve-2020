@@ -73,7 +73,6 @@ public class DiffSwerveMod extends PIDSubsystem {
   @Override
   protected void usePIDOutput(double output) {
     this.output = output;
-    // System.out.println("output: " + this.output);
   }
 
   @Override
@@ -113,22 +112,35 @@ public class DiffSwerveMod extends PIDSubsystem {
     return MathUtil.boundHalfAngleRad((double)(this.getModAngle()));
   }
 
+  /**
+   * Moves module with adjustments to speed and adjustments to angle.
+   * @param angle Angle to set module to (degrees)
+   * @param power Speed to run module at
+   */
   public void moveModSmart(double angle, double power) {
+    /* This part of the function lags out the entire system. 
+
     double target = MathUtil.boundHalfAngleDeg(angle);
     boolean isReversed = MathUtil.isReversed(angle);
 
     if(isReversed) {
       setSetpoint(-target);
-      System.out.println("Reversed Module");
+      // System.out.println("Reversed Module");
     } else {
       setSetpoint(target);
-    }
+    } */
+
+    setSetpoint(angle);
 
     motor0.set(this.output + MathUtil.msToRpm(power));
     motor1.set(this.output - MathUtil.msToRpm(power));
-    System.out.println("motor power set");
   }
 
+  /**
+   * Moves module without any adjustments to speed
+   * @param angle Angle to set module to (degrees)
+   * @param power Speed to run module at
+   */
   public void moveModDumb(double angle, double power) {
     setSetpoint(angle);
 
@@ -137,6 +149,11 @@ public class DiffSwerveMod extends PIDSubsystem {
     System.out.println(this.output + power);
   }
 
+  /**
+   * Moves module with radians as unit
+   * @param rad Angle to set module to (radians)
+   * @param power Speed to run module at
+   */
   public void moveModRad(double rad, double power) {
     double target = (MathUtil.wrapAngleRad(rad)) * (180 / Math.PI);
     this.moveModSmart(target, power);

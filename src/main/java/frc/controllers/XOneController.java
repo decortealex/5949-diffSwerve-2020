@@ -84,7 +84,7 @@ public class XOneController {
     public double getRightAxisAngle() {
         double x = this.getRightXAxis();
         double y = this.getRightYAxis();
-        double angleRad = Math.atan2(y, x);
+        double angleRad = Math.atan2(x, y);
         
         if(Math.abs(x) < 0.6 && Math.abs(y) < 0.6) {
             // System.out.print("Joystick Angle: " + -prevAngle);
@@ -92,7 +92,11 @@ public class XOneController {
         } else {
             // System.out.print("Joystick Angle: " + -prevAngle);
             prevAngle = (Math.toDegrees(angleRad) + 180);
-            return -(prevAngle);
+            if(prevAngle > 180) {
+                return -(prevAngle - 180);
+            } else {
+                return -(prevAngle);
+            }
         }
     }
 

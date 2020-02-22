@@ -44,6 +44,7 @@ public class Drivetrain extends SubsystemBase {
 
     final DiffSwerveMod[] swervemods = {this.m_modFL, this.m_modFR, this.m_modBL, this.m_modBR};
     this.swerveMods = swervemods;
+
     this.m_kinematics = new SwerveDriveKinematics(
       this.m_FLPos, this.m_FRPos, this.m_BLPos, this.m_BRPos);
   }
@@ -90,6 +91,7 @@ public class Drivetrain extends SubsystemBase {
   public void swerve(double x, double y, double rad) {
     ChassisSpeeds speeds = new ChassisSpeeds(x, y, rad);
     SwerveModuleState[] modStates = m_kinematics.toSwerveModuleStates(speeds);
+    SwerveDriveKinematics.normalizeWheelSpeeds(modStates, 20);
 
     for(int i = 0; i < this.swerveMods.length; i++) {
       this.swerveMods[i].moveModSmart(modStates[i].angle.getDegrees(), modStates[i].speedMetersPerSecond);
@@ -107,6 +109,7 @@ public class Drivetrain extends SubsystemBase {
   public void swerve(double x, double y, double rad, double robotRotation) {
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rad, Rotation2d.fromDegrees(robotRotation));
     SwerveModuleState[] modStates = m_kinematics.toSwerveModuleStates(speeds);
+    SwerveDriveKinematics.normalizeWheelSpeeds(modStates, 20);
 
     for(int i = 0; i < this.swerveMods.length; i++) {
       this.swerveMods[i].moveModSmart(modStates[i].angle.getDegrees(), modStates[i].speedMetersPerSecond);
