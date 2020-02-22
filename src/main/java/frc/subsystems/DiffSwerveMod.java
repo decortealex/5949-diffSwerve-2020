@@ -118,19 +118,8 @@ public class DiffSwerveMod extends PIDSubsystem {
    * @param power Speed to run module at
    */
   public void moveModSmart(double angle, double power) {
-    /* This part of the function lags out the entire system. 
-
-    double target = MathUtil.boundHalfAngleDeg(angle);
-    boolean isReversed = MathUtil.isReversed(angle);
-
-    if(isReversed) {
-      setSetpoint(-target);
-      // System.out.println("Reversed Module");
-    } else {
-      setSetpoint(target);
-    } */
-
-    setSetpoint(angle);
+    double modAngle = (Math.PI / 4) * (Math.cos(2 * (angle - (Math.PI / 2))) + 1);
+    setSetpoint(Math.toDegrees(modAngle));
 
     motor0.set(this.output + MathUtil.msToRpm(power));
     motor1.set(this.output - MathUtil.msToRpm(power));

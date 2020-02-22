@@ -63,17 +63,13 @@ public class LogitechController {
     public double getLeftAxisAngle() {
         double x = this.getLeftXAxis();
         double y = this.getLeftYAxis();
-        double angleRad = Math.atan2(x, y);
+        double angleRad = Math.abs(Math.atan2(x, y));
         
         if(Math.abs(x) < 0.6 && Math.abs(y) < 0.6) {
-            return -(prevAngle);
+            return prevAngle;
         } else {
-            prevAngle = (Math.toDegrees(angleRad) + 180);
-            if(prevAngle > 180) {
-                return -(prevAngle - 180);
-            } else {
-                return -(prevAngle);
-            }
+            prevAngle = angleRad;
+            return prevAngle;
         }
     }
 
@@ -95,19 +91,13 @@ public class LogitechController {
     public double getRightAxisAngle() {
         double x = this.getRightXAxis();
         double y = this.getRightYAxis();
-        double angleRad = Math.atan2(x, y);
+        double angleRad = Math.abs(Math.atan2(x, y));
         
         if(Math.abs(x) < 0.6 && Math.abs(y) < 0.6) {
-            // System.out.print("Joystick Angle: " + -prevAngle);
-            return -(prevAngle);
+            return prevAngle;
         } else {
-            // System.out.print("Joystick Angle: " + -prevAngle);
-            prevAngle = (Math.toDegrees(angleRad) + 180);
-            if(prevAngle > 180) {
-                return -(prevAngle - 180);
-            } else {
-                return -(prevAngle);
-            }
+            prevAngle = angleRad;
+            return prevAngle;
         }
     }
 
